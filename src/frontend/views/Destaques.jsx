@@ -13,19 +13,6 @@ const Destaques = () => {
             <div className=' flex-col my-auto mx-auto'>
                 <p className='md:text-5xl sm:text-xl font-bold text-red-300'>Happy HotDog</p>
                 <h1 className='md:text-7xl sm:text-6xl text-4xl font-bold md:py-6'>
-                <TypeAnimation
-                sequence={[
-                    "+Sabor!",
-                    1000,
-                    "+Experiência",
-                    1000,
-                    "O melhor do Brasil!",
-                    1000,
-                ]}
-                wrapper='span'
-                speed={50}
-                repeat={Infinity}
-            />
             </h1>
             <div className='flex justify-center items-center'>
                 <p className='md:text-5xl sm:text-4xl text-xl font-bold text-gray-500'>Felicidade em cada mordida. </p>

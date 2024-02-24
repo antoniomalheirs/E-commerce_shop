@@ -1,12 +1,13 @@
 {
-  "name": "e-commerce_shop",
+  "name": "webshop",
   "version": "1.0.0",
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "main": "index.js",
+  "description": "",
+  "main": "Index.js",
   "scripts": {
-    "webpack": "webpack --config Webpackto.js --watch",
+    "webpack": "webpack --config webpackk.js --watch",
     "serve": "nodemon ./dist/server.js",
-    "start": "npm-run-all --parallel serve webpack"
+    "start": "npm-run-all --parallel serve webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "react-type-animation": "^3.2.0"
+    "react-type-animation": "^3.2.0",
+    "update": "^0.4.2",
+    "upgrade": "^1.1.0"
   }
 }
