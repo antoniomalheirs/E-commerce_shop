@@ -6,8 +6,10 @@ import { Strategy as LocalStrategy } from "passport-local";
 import session from "express-session";
 import authRoutes from "./src/backend/routes/auth.js";
 import App from "./src/frontend/App.jsx";
+import DatabaseLoader from './src/backend/loaders/DatabaseLoader.js';
 
 const server = Express();
+require('dotenv').config();
 
 server.use("/auth", authRoutes);
 
@@ -78,6 +80,23 @@ server.get("/", function (req, res) {
     </html>`;
   res.send(html);
 });
+
+// Crie uma instância do DatabaseLoader
+const databaseLoader = new DatabaseLoader();
+
+// Chame o método `call()` para iniciar o carregamento do banco de dados
+databaseLoader.call()
+  .then(() => {
+    console.log('Banco de dados carregado e conectado com sucesso.');
+    // Inicie sua aplicação aqui...
+  })
+  .catch((err) => {
+    console.error('Erro ao carregar o banco de dados:', err);
+    // Lide com o erro de forma apropriada...
+  });
+
+// Resto do seu código...
+
 
 server.listen(5173, function () {
   console.log("Servidor na porta 5173");

@@ -25,7 +25,7 @@ const Header = () => {
             <a href="#cardapio">Cardapio</a>
           </li>
           <li className="p-5">
-            <a href="#">Pedidos</a>
+            <a href="/auth/about">Login ou Cadastro</a>
           </li>
         </ul>
       </div>
