@@ -19,10 +19,9 @@ module.exports = class UserRepository extends Repository {
         voiceTime: entity.voiceTime || 0,
         totalMessages: entity.totalMessages || 0,
         idguild: entity.idguild || "nada encontrado",
-        // ... outros campos do usuário
       };
     } else {
-      return null; // ou um objeto vazio, dependendo da preferência
+      return null;
     }
   }
 

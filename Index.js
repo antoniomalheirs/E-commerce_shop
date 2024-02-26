@@ -18,7 +18,6 @@ passport.use(
     { usernameField: "email" },
     async (email, password, done) => {
       try {
-        // Lógica de autenticação aqui
         
       } catch (error) {
         return done(error);

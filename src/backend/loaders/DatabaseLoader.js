@@ -16,7 +16,7 @@ module.exports = class DatabaseLoader {
       await this.database.connect();
     } catch (err) {
       console.error("\x1b[1m\x1b[33m[BANCO DE DADOS]\x1b[0m", `Erro ao conectar o Banco de Dados.\n${err}`);
-      process.exit(1); // Sai do processo com código de erro
+      process.exit(1); 
     }
   }
 };
