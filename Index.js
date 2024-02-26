@@ -1,10 +1,54 @@
 import Express from "express";
 import React from "react";
-import ReactDOM  from "react-dom/server";
-
-import App from "./src/frontend/App.jsx"
+import ReactDOM from "react-dom/server";
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import session from "express-session";
+import authRoutes from "./src/backend/routes/auth.js";
+import App from "./src/frontend/App.jsx";
 
 const server = Express();
+
+server.use("/auth", authRoutes);
+
+// Configuração da estratégia de autenticação local
+passport.use(
+  new LocalStrategy(
+    { usernameField: "email" },
+    async (email, password, done) => {
+      try {
+        // Lógica de autenticação aqui
+        
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    // Lógica de desserialização do usuário aqui
+    
+  } catch (error) {
+    done(error);
+  }
+});
+
+server.use(
+  session({
+    secret: "oiacordei",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+server.use(passport.initialize());
+server.use(passport.session());
 
 server.get("/", function (req, res) {
   const html = `<!DOCTYPE html>
@@ -13,12 +57,12 @@ server.get("/", function (req, res) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-        <title>Hot Dog ADT</title>
+        <title>Hot Dog Adams</title>
         <style>
             body{
-                background-color: #fff;
+                background-color: #ccc;
                 font-family: 'Poppins', sans-serif;
-                font-weight: 800;
+                font-weight: 1000;
             }
             
             span, .primary-color{
@@ -29,7 +73,7 @@ server.get("/", function (req, res) {
             </style>
     </head>
     <body>
-        ${ReactDOM.renderToString(<App />)}       
+        ${ReactDOM.renderToString(<App />)}
     </body>
     </html>`;
   res.send(html);
@@ -38,3 +82,4 @@ server.get("/", function (req, res) {
 server.listen(5173, function () {
   console.log("Servidor na porta 5173");
 });
+
