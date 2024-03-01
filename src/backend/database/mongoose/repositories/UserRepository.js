@@ -8,11 +8,9 @@ module.exports = class UserRepository extends UsersRepository {
 
   parse(entity) {
     return {
-      codigouser: null,
       username: null,
-      voiceTime: null,
-      totalMessages: null,
-      idguild: null,
+      password: null,
+      hash: null,
       ...(super.parse(entity) || {}),
     };
   }

@@ -8,6 +8,18 @@ passport.use(new Strategy({ usernameField: "username" }, async (username, passwo
     try {
         const userschema = new UsersRepository(Mongoose, "Users");
 
+        passport.serializeUser((user, done) => {
+            done(null, user.username);
+          });
+          
+          passport.deserializeUser(async (username, done) => {
+            try {
+              const user = await userschema.findOne(username); // Use seu método de encontrar usuário com base no ID
+              done(null, user); // Retorna o usuário encontrado
+            } catch (error) {
+              done(error); // Se ocorrer um erro, repasse-o ao Passport
+            }
+          });
         // Verificar se o usuário existe
         const user = await userschema.findOne(username);
 

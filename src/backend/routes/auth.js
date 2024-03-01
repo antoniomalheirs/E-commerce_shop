@@ -15,7 +15,7 @@ router.get("/about", (req, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
-  console.log("Tudo certo, estamos indo bem"); res.send(200);
+  console.log("Tudo certo, estamos indo bem SR." + req.user.username); res.send(200);
 });
 
 router.get("/admin", (req, res) => {
