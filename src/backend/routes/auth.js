@@ -1,4 +1,5 @@
 const express = require("express");
+const passport = require("passport");
 const router = express.Router();
 const React = require("react");
 const ReactDOM = require("react-dom/server");
@@ -13,7 +14,11 @@ router.get("/about", (req, res) => {
   res.send("About meu pau no seu bumbum");
 });
 
-router.get("/testando", (req, res) => {
+router.post("/login", passport.authenticate("local"), (req, res) => {
+  console.log("Tudo certo, estamos indo bem"); res.send(200);
+});
+
+router.get("/admin", (req, res) => {
   const html = `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -24,7 +29,7 @@ router.get("/testando", (req, res) => {
       <style>
           body{
               background-color: #ccc;
-              font-family: 'Poppins', sans-serif;
+              font-family: 'Arial', sans-serif;
               font-weight: 1000;
           }
           
@@ -36,7 +41,7 @@ router.get("/testando", (req, res) => {
           </style>
   </head>
   <body>
-      ${ReactDOM.renderToString(<Admin/>)}
+      ${ReactDOM.renderToString(<Admin />)}
   </body>
   </html>`;
   res.send(html);

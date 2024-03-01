@@ -1,55 +1,38 @@
-import Express from "express";
+// server.js
+import express from "express";
 import React from "react";
-import ReactDOM from "react-dom/server";
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
+import ReactDOMServer from "react-dom/server";
 import session from "express-session";
 import authRoutes from "./src/backend/routes/auth.js";
 import App from "./src/frontend/App.jsx";
-import DatabaseLoader from './src/backend/loaders/DatabaseLoader.js';
+import DatabaseLoader from "./src/backend/loaders/DatabaseLoader.js";
+import "./src/backend/routes/local.js"; 
 
-const server = Express();
-require('dotenv').config();
+require("dotenv").config();
+const databaseLoader = new DatabaseLoader();
 
-server.use("/auth", authRoutes);
+const server = express();
 
-passport.use(
-  new LocalStrategy(
-    { usernameField: "email" },
-    async (email, password, done) => {
-      try {
-        
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
+server.use(express.json());
+server.use(express.urlencoded());
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    
-  } catch (error) {
-    done(error);
-  }
-});
+server.set("trust proxy", 1);
 
 server.use(
   session({
-    secret: "oiacordei",
-    resave: false,
-    saveUninitialized: false,
+    secret: process.env.SECRET_KEY,
+    name: "E-Commerce_Shop",
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 360000 },
   })
 );
 
 server.use(passport.initialize());
 server.use(passport.session());
 
-const databaseLoader = new DatabaseLoader();
+server.use("/auth", authRoutes);
 
 server.get("/", function (req, res) {
   const html = `<!DOCTYPE html>
@@ -74,24 +57,20 @@ server.get("/", function (req, res) {
             </style>
     </head>
     <body>
-        ${ReactDOM.renderToString(<App />)}
+        ${ReactDOMServer.renderToString(<App />)}
     </body>
     </html>`;
   res.send(html);
 });
 
-databaseLoader.call()
+databaseLoader
+  .call()
   .then(() => {
-    console.log('Banco de dados carregado e conectado com sucesso.');
+    console.log("Banco de dados carregado e conectado com sucesso.");
     server.listen(5173, function () {
       console.log("Servidor na porta 5173");
     });
-
   })
   .catch((err) => {
-    console.error('Erro ao carregar o banco de dados:', err);
-
+    console.error("Erro ao carregar o banco de dados:", err);
   });
-
-
-

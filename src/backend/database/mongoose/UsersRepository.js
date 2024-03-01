@@ -1,4 +1,5 @@
 const Repository = require("../Repository.js");
+const bcrypt = require("bcrypt");
 
 module.exports = class UserRepository extends Repository {
   constructor(mongoose, model) {
@@ -14,11 +15,8 @@ module.exports = class UserRepository extends Repository {
   parse(entity) {
     if (entity) {
       return {
-        codigouser: entity.codigouser ? String(entity.codigouser) : null,
         username: entity.username,
-        voiceTime: entity.voiceTime || 0,
-        totalMessages: entity.totalMessages || 0,
-        idguild: entity.idguild || "nada encontrado",
+        password: entity.password,
       };
     } else {
       return null;
@@ -29,69 +27,59 @@ module.exports = class UserRepository extends Repository {
     return this.model.create(entity).then(this.parse);
   }
 
-  findOne(codigouser, projection) {
-    return this.model.findOne({ codigouser }, projection).then(this.parse);
+  async add(username, password) {
+    try {
+      const hash = await bcrypt.hash(password, 10); // Hashing da senha
+      password = hash;
+      const user = { username, password }; // Armazenar o hash da senha na propriedade 'hash'
+      return await this.model.create(user); // Adicionar o usuário ao banco de dados
+    } catch (error) {
+      console.error("Erro ao adicionar usuário:", error);
+      throw error;
+    }
   }
 
-  findByUsername(username, projection) {
+  findOne(username, projection) {
     return this.model.findOne({ username }, projection).then(this.parse);
-  }
-
-  findByGuildId(idguild, projection) {
-    return this.model
-      .findOne({ idguild }, projection)
-      .then((result) => (result ? this.parse(result) : false));
   }
 
   get size() {
     return this.model.find({}).then((e) => e.length);
   }
 
-  get(codigouser, projection) {
+  get(username, projection) {
     return this.model
-      .findOne({ codigouser }, projection)
-      .then((entity) =>
-        entity ? this.parse(entity) : this.add({ codigouser })
-      );
+      .findOne({ username }, projection)
+      .then((entity) => (entity ? this.parse(entity) : this.add({ username })));
   }
 
-  getByUserIdAndGuildId(codigouser, idguild, projection) {
-    return this.model
-      .findOne({ codigouser, idguild }, projection)
-      .then((entity) =>
-        entity ? this.parse(entity) : this.add({ codigouser, idguild })
-      );
-  }
-  
-
-  getAllUniqueYoutubeAttributes() {
-    return this.model.distinct("codigouser").exec();
+  remove(username) {
+    return this.model.findOneAndDelete({ username }).then(this.parse);
   }
 
-  remove(codigouser) {
-    return this.model.findOneAndDelete({ codigouser }).then(this.parse);
+  update(username, entity, options = { upsert: true }) {
+    return this.model.updateOne({ username }, entity, options);
   }
 
-  update(codigouser, entity, options = { upsert: true }) {
-    return this.model.updateOne({ codigouser }, entity, options);
+  async verify(username) {
+    return !!(await this.model.findOne({ username }));
   }
 
-  updateByUserIdAndGuildId(codigouser, idguild, entity, options = { upsert: true }) {
-    return this.model.updateOne({ codigouser, idguild }, entity, options);
-  }
-  
-
-  async verify(codigouser) {
-    return !!(await this.model.findOne({ codigouser }));
+  async verifyPassword(username, password) {
+    try {
+      const user = await this.model.findOne({ username });
+      if (!user) {
+        return false; // Usuário não encontrado
+      }
+      const hash = user.password; // Obtém o hash da senha armazenada
+      return bcrypt.compare(password, hash, function(err, result) {});// Comparar as senhas
+    } catch (error) {
+      console.error("Erro ao verificar a senha:", error);
+      throw error; // Lançar erro se ocorrer algum problema
+    }
   }
 
   findAll(projection) {
     return this.model.find({}, projection).then((e) => e.map(this.parse));
-  }
-
-  findAllByGuildId(guildId, projection) {
-    return this.model
-      .find({ idguild: guildId }, projection)
-      .then((results) => results.map(this.parse));
   }
 };
