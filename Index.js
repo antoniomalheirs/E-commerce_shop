@@ -7,7 +7,8 @@ import session from "express-session";
 import authRoutes from "./src/backend/routes/auth.js";
 import App from "./src/frontend/App.jsx";
 import DatabaseLoader from "./src/backend/loaders/DatabaseLoader.js";
-import "./src/backend/routes/local.js"; 
+import "./src/backend/routes/local.js";
+import cookieParser from 'cookie-parser';
 
 require("dotenv").config();
 const databaseLoader = new DatabaseLoader();
@@ -19,13 +20,14 @@ server.use(express.urlencoded());
 
 server.set("trust proxy", 1);
 
+server.use(cookieParser());
 server.use(
   session({
     secret: process.env.SECRET_KEY,
     name: "E-Commerce_Shop",
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 360000 },
+    cookie: { maxAge: 20000 },
   })
 );
 

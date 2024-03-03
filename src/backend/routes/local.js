@@ -2,25 +2,32 @@ const passport = require("passport");
 const { Strategy } = require("passport-local");
 const Mongoose = require("mongoose");
 const UsersRepository = require("../database/mongoose/UsersRepository");
-const bcrypt = require('bcrypt');
+
+passport.serializeUser((user, done) => {
+  console.log("Serializing...");
+  console.log(user);
+  done(null, user.username);
+});
+
+passport.deserializeUser(async (username, done) => {
+  const userschema = new UsersRepository(Mongoose, "Users");
+  const user = await userschema.findOne(username);
+  
+  try {
+    if(user)
+    {
+      console.log("Deserializing...");
+      console.log(username);
+      done(null, user); 
+    };
+  } catch (error) {
+    done(error,false);
+  }
+});
 
 passport.use(new Strategy({ usernameField: "username" }, async (username, password, done) => {
     try {
         const userschema = new UsersRepository(Mongoose, "Users");
-
-        passport.serializeUser((user, done) => {
-            done(null, user.username);
-          });
-          
-          passport.deserializeUser(async (username, done) => {
-            try {
-              const user = await userschema.findOne(username); // Use seu método de encontrar usuário com base no ID
-              done(null, user); // Retorna o usuário encontrado
-            } catch (error) {
-              done(error); // Se ocorrer um erro, repasse-o ao Passport
-            }
-          });
-        // Verificar se o usuário existe
         const user = await userschema.findOne(username);
 
         if (!user) {
@@ -41,7 +48,7 @@ passport.use(new Strategy({ usernameField: "username" }, async (username, passwo
         }
     } catch (error) {
         console.error("Erro ao autenticar usuário:", error);
-        return done(error);
+        return done(error,false);
     }
 }));
 
