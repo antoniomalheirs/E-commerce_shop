@@ -9,16 +9,18 @@ import App from "./src/frontend/App.jsx";
 import DatabaseLoader from "./src/backend/loaders/DatabaseLoader.js";
 import "./src/backend/routes/local.js";
 import cookieParser from 'cookie-parser';
+import bodyParser from "body-parser"
 
 require("dotenv").config();
 const databaseLoader = new DatabaseLoader();
 
 const server = express();
 
-server.use(express.json());
-server.use(express.urlencoded());
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
 
 server.set("trust proxy", 1);
+server.set("views", __dirname + "/views");
 
 server.use(cookieParser());
 server.use(

@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-const Admin = () => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <div className="py-4" style={{  }}>
       <h1 className="text-center text-3xl font-bold text-black mb-4">
-        Login
+        Criar conta
       </h1>
       <form
-        action="/auth/login"
+        action="/auth/signup"
         method="POST"
         className="flex flex-col items-center"
       >
@@ -45,8 +45,8 @@ const Admin = () => {
         </Button>
       </form>
 
-      <a href="/auth/register" className="block text-center text-green-500 mt-4 underline">Registrar conta</a>
+      <a href="/auth/admin" className="block text-center text-green-500 mt-4 underline">Fazer login</a>
     </div>
   );
 };
-export default Admin;
+export default Register;
