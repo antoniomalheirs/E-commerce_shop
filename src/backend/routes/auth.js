@@ -7,6 +7,7 @@ const ReactDOM = require("react-dom/server");
 const { default: Admin } = require("../../frontend/views/Admin.jsx");
 const { default: HomeAdm } = require("../../frontend/views/HomeAdm.jsx");
 const { default: Register } = require("../../frontend/views/Register.jsx");
+const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
 
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -17,7 +18,6 @@ const isAuthenticated = (req, res, next) => {
 
 router.use((req, res, next) => {
   console.log("Time: ", Date.now());
-  //if (req.user) next();
   next();
 });
 
@@ -31,83 +31,66 @@ router.get("/logout", (req, res) => {
   });
 });
 
-
-
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.redirect("/auth/admin");
-    }
-    const html = `<!DOCTYPE html>
+router.post("/login", passport.authenticate("local", { failureRedirect: "/auth/admin" }), async (req, res, next) => {
+  const html = `
+    <!DOCTYPE html>
     <html lang="en">
-    <head>
+      <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
         <title>Hot Dog Adams</title>
         <style>
-            body{
-                background-color: #ccc;
-                font-family: 'Arial', sans-serif;
-                font-weight: 1000;
-            }
-            
-            span, .primary-color{
-                background-image: linear-gradient(to right,#fce729, #f1cd2c);
-                -webkit-background-clip: text;
-                color: transparent;
-            }
-            </style>
-    </head>
-    <body>
-        ${ReactDOM.renderToString(<HomeAdm />)}
-    </body>
+          body {
+            background-color: #ccc;
+            font-family: 'Arial', sans-serif;
+            font-weight: 1000;
+          }
+          span, .primary-color {
+            background-image: linear-gradient(to right,#fce729, #f1cd2c);
+            -webkit-background-clip: text;
+            color: transparent;
+          }
+        </style>
+      </head>
+      <body>
+        ${ReactDOM.renderToString(<HomeAdm field1Data={req.user.username} field2Data={"Nome de administrador"} field3Data={req.user._id} field4Data={"Id de administrador"}/>)}
+        ${ReactDOM.renderToString(<Feetpage />)}
+      </body>
     </html>`;
   res.send(html);
-  })(req, res, next);
 });
 
-
-router.post("/signup", (req, res, next) => {
-  passport.authenticate("signup", (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      
-      return res.redirect("/auth/register");
-    }
+router.post("/signup", passport.authenticate("signup", { failureRedirect: "/auth/register" }), async (req, res, next) => {
     const html = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-        <title>Hot Dog Adams</title>
-        <style>
-            body{
-                background-color: #ccc;
-                font-family: 'Arial', sans-serif;
-                font-weight: 1000;
-            }
-            
-            span, .primary-color{
-                background-image: linear-gradient(to right,#fce729, #f1cd2c);
-                -webkit-background-clip: text;
-                color: transparent;
-            }
-            </style>
-    </head>
-    <body>
-        ${ReactDOM.renderToString(<HomeAdm />)}
-    </body>
-    </html>`;
-  res.send(html);
-  })(req, res, next);
-});
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          <title>Hot Dog Adams</title>
+          <style>
+              body{
+                  background-color: #ccc;
+                  font-family: 'Arial', sans-serif;
+                  font-weight: 1000;
+              }
+              
+              span, .primary-color{
+                  background-image: linear-gradient(to right,#fce729, #f1cd2c);
+                  -webkit-background-clip: text;
+                  color: transparent;
+              }
+              </style>
+      </head>
+      <body>
+        ${ReactDOM.renderToString(<HomeAdm field1Data={req.user.username} field2Data={"Nome de administrador"} field3Data={req.user._id} field4Data={"Id de administrador"}/>)}
+        ${ReactDOM.renderToString(<Feetpage />)}
+      </body>
+      </html>`;
+    res.send(html);
+  }
+);
 
 router.get("/register", (req, res) => {
   const html = `<!DOCTYPE html>
@@ -136,7 +119,6 @@ router.get("/register", (req, res) => {
   </body>
   </html>`;
   res.send(html);
-  //console.log(req.user);
 });
 
 router.get("/admin", (req, res) => {

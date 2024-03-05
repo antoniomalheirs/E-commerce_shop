@@ -15,7 +15,6 @@ const Cardapio = () => {
            
           </div>
         </div>
-            {/* <div class="w-[700px] h-[2px] bg-yellow-400 relative my-1 mx-auto"></div> */}
         <div className="mb-8">
         
             <br />

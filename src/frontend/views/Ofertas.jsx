@@ -11,7 +11,6 @@ const Ofertas = () => {
                      src=""
                      alt=""
                      className='rounded-xl w-[300px] sm:w-[400px] mx-auto h-auto '
-                    //  className='object-cover bg-gray-700 rounded-xl h-[400px] filter grayscale brightness-50'
                      />
                     </div>
                 </div>

@@ -8,6 +8,7 @@ module.exports = class UserRepository extends UsersRepository {
 
   parse(entity) {
     return {
+      _id: null,
       username: null,
       password: null,
       hash: null,

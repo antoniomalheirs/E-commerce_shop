@@ -3,7 +3,7 @@ const { Strategy } = require("passport-local");
 const Mongoose = require("mongoose");
 const UsersRepository = require("../database/mongoose/UsersRepository");
 
-passport.serializeUser(async (user, done) => {
+passport.serializeUser((user, done) => {
   console.log("Serializing...");
   console.log(user);
   done(null, user.username);
@@ -24,10 +24,7 @@ passport.deserializeUser(async (username, done) => {
   }
 });
 
-passport.use(
-  new Strategy(
-    { usernameField: "username" },
-    async (username, password, done) => {
+passport.use(new Strategy({ usernameField: "username" }, async (username, password, done) => {
       try {
         const userschema = new UsersRepository(Mongoose, "Users");
         const user = await userschema.findOne(username);
@@ -37,7 +34,6 @@ passport.use(
           return done(null, false);
         }
 
-        // Comparar a senha fornecida com a senha armazenada no banco de dados
         const isPasswordCorrect = await userschema.verifyPassword(
           username,
           password
@@ -58,11 +54,7 @@ passport.use(
   )
 );
 
-passport.use(
-  "signup",
-  new Strategy(
-    { usernameField: "username" },
-    async (username, password, done) => {
+passport.use("signup", new Strategy({ usernameField: "username" }, async (username, password, done) => {
       try {
         const userschema = new UsersRepository(Mongoose, "Users");
         const user = await userschema.findOne(username);
@@ -72,7 +64,6 @@ passport.use(
           return done(null, false);
         } else {
           try {
-            // Aguardando a resolução da promessa e tratando erros
             const newUser = await userschema.add(username, password);
             console.log("Conta criada");
             return done(null, newUser);

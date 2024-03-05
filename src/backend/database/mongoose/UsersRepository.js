@@ -15,6 +15,7 @@ module.exports = class UserRepository extends Repository {
   parse(entity) {
     if (entity) {
       return {
+        _id: entity._id,
         username: entity.username,
         password: entity.password,
         hash: entity.hash,
@@ -30,9 +31,9 @@ module.exports = class UserRepository extends Repository {
 
   async add(username, password) {
     try {
-      const hash = await bcrypt.hash(password, 10); // Hashing da senha
-      const user = { username, hash }; // Armazenar o hash da senha na propriedade 'hash'
-      return await this.model.create(user); // Adicionar o usuário ao banco de dados
+      const hash = await bcrypt.hash(password, 10); 
+      const user = { username, hash }; 
+      return await this.model.create(user); 
     } catch (error) {
       console.error("Erro ao adicionar usuário:", error);
       throw error;
@@ -68,15 +69,16 @@ module.exports = class UserRepository extends Repository {
   async verifyPassword(username, password) {
     try {
       const user = await this.model.findOne({ username });
+      user.password= password;
       if (!user) {
-        return false; // Usuário não encontrado
+        return false; 
       }
-      const hash = user.hash; // Obtém o hash da senha armazenada
-      const result = await bcrypt.compare(password, hash); // Comparar as senhas
-      return result; // Retornar o resultado da comparação
+      const hash = user.hash; 
+      const result = await bcrypt.compare(password, hash); 
+      return result; 
     } catch (error) {
       console.error("Erro ao verificar a senha:", error);
-      throw error; // Lançar erro se ocorrer algum problema
+      throw error; 
     }
   }
 

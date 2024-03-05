@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 
-const HomeAdm = () => {
-
+const HomeAdm = ({ field1Data, field2Data, field3Data, field4Data }) => {
   return (
-    <div className="py-4">
-      <a href="/auth/about" className="block text-center text-green-500 mt-4 underline">Ir para sobre!</a>
-      <a href="/auth/logout" className="block text-center text-green-500 mt-4 underline">Sair e Voltar para o Inicio</a>
+    <div className="py-4 flex w-65 h-65 justify-center items-center">
+      <div className="flex flex-row">
+        <div className="mx-2">
+          <TextField
+            label={field2Data}
+            variant="outlined"
+            value={field1Data}
+            disabled
+            className="my-2"
+          />
+        </div>
+        <div className="mx-2">
+          <TextField
+            label={field4Data}
+            variant="outlined"
+            value={field3Data}
+            disabled
+            className="my-2"
+          />
+        </div>
+      </div>
     </div>
-    );
+  );
 };
 
 export default HomeAdm;
