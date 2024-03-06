@@ -8,6 +8,7 @@ const { default: Admin } = require("../../frontend/views/Admin.jsx");
 const { default: HomeAdm } = require("../../frontend/views/HomeAdm.jsx");
 const { default: Register } = require("../../frontend/views/Register.jsx");
 const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
+const { default: Newnegocio } = require("../../frontend/views/Newnegocio.jsx");
 
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -17,7 +18,7 @@ const isAuthenticated = (req, res, next) => {
 };
 
 router.use((req, res, next) => {
-  console.log("Time: ", Date.now());
+  console.log("Auth Time: ", Date.now());
   next();
 });
 
@@ -40,21 +41,10 @@ router.post("/login", passport.authenticate("local", { failureRedirect: "/auth/a
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
         <title>Hot Dog Adams</title>
-        <style>
-          body {
-            background-color: #ccc;
-            font-family: 'Arial', sans-serif;
-            font-weight: 1000;
-          }
-          span, .primary-color {
-            background-image: linear-gradient(to right,#fce729, #f1cd2c);
-            -webkit-background-clip: text;
-            color: transparent;
-          }
-        </style>
       </head>
       <body>
         ${ReactDOM.renderToString(<HomeAdm field1Data={req.user.username} field2Data={"Nome de administrador"} field3Data={req.user._id} field4Data={"Id de administrador"}/>)}
+        ${ReactDOM.renderToString(<Newnegocio />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
@@ -69,19 +59,6 @@ router.post("/signup", passport.authenticate("signup", { failureRedirect: "/auth
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
           <title>Hot Dog Adams</title>
-          <style>
-              body{
-                  background-color: #ccc;
-                  font-family: 'Arial', sans-serif;
-                  font-weight: 1000;
-              }
-              
-              span, .primary-color{
-                  background-image: linear-gradient(to right,#fce729, #f1cd2c);
-                  -webkit-background-clip: text;
-                  color: transparent;
-              }
-              </style>
       </head>
       <body>
         ${ReactDOM.renderToString(<HomeAdm field1Data={req.user.username} field2Data={"Nome de administrador"} field3Data={req.user._id} field4Data={"Id de administrador"}/>)}
@@ -100,19 +77,6 @@ router.get("/register", (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
       <title>Hot Dog Adams</title>
-      <style>
-          body{
-              background-color: #ccc;
-              font-family: 'Arial', sans-serif;
-              font-weight: 1000;
-          }
-          
-          span, .primary-color{
-              background-image: linear-gradient(to right,#fce729, #f1cd2c);
-              -webkit-background-clip: text;
-              color: transparent;
-          }
-          </style>
   </head>
   <body>
       ${ReactDOM.renderToString(<Register />)}
@@ -129,19 +93,6 @@ router.get("/admin", (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
       <title>Hot Dog Adams</title>
-      <style>
-          body{
-              background-color: #ccc;
-              font-family: 'Arial', sans-serif;
-              font-weight: 1000;
-          }
-          
-          span, .primary-color{
-              background-image: linear-gradient(to right,#fce729, #f1cd2c);
-              -webkit-background-clip: text;
-              color: transparent;
-          }
-          </style>
   </head>
   <body>
       ${ReactDOM.renderToString(<Admin />)}

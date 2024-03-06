@@ -7,7 +7,7 @@ const Admin = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="py-4" style={{  }}>
+    <div className="py-4" style={{ backgroundColor: "#ccc" }}>
       <h1 className="text-center text-3xl font-bold text-black mb-4">
         Login
       </h1>

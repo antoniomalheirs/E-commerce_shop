@@ -5,10 +5,12 @@ import passport from "passport";
 import ReactDOMServer from "react-dom/server";
 import session from "express-session";
 import authRoutes from "./src/backend/routes/auth.js";
+import shopRoutes from "./src/backend/routes/shop.js";
 import App from "./src/frontend/App.jsx";
 import DatabaseLoader from "./src/backend/loaders/DatabaseLoader.js";
 import "./src/backend/routes/local.js";
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import bodyParser from "body-parser"
 
 require("dotenv").config();
@@ -21,6 +23,8 @@ server.use(bodyParser.json());
 
 server.set("trust proxy", 1);
 server.set("views", __dirname + "/views");
+server.use(express.static(path.join(__dirname, 'src/frontend/assets/')));
+
 
 server.use(cookieParser());
 server.use(
@@ -37,6 +41,7 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 server.use("/auth", authRoutes);
+server.use("/shop", shopRoutes);
 
 server.get("/", function (req, res) {
   const html = `<!DOCTYPE html>
