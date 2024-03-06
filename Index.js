@@ -33,7 +33,7 @@ server.use(
     name: "E-Commerce_Shop",
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 20000000000 },
+    cookie: { maxAge: 999000 },
   })
 );
 
