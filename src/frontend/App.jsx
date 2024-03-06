@@ -8,9 +8,9 @@ function App() {
   return (
     <>
       <Header />
+      <Destaques />
       <Ofertas />
       <Cardapio />
-      <Destaques />
     </>
   );
 }

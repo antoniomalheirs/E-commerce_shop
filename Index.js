@@ -23,7 +23,7 @@ server.use(bodyParser.json());
 
 server.set("trust proxy", 1);
 server.set("views", __dirname + "/views");
-server.use(express.static(path.join(__dirname, 'src/frontend/assets/')));
+server.use(express.static(__dirname + "/public" ));
 
 
 server.use(cookieParser());
@@ -67,8 +67,13 @@ server.get("/", function (req, res) {
     </head>
     <body>
         ${ReactDOMServer.renderToString(<App />)}
+        <img src="/img/logo.png" alt="logo">
+
     </body>
     </html>`;
+    console.log("Caminho da imagem:", path.join(__dirname, 'public', 'img', 'logo.png'));
+
+
   res.send(html);
 });
 
