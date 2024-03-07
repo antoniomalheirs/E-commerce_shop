@@ -11,7 +11,7 @@ const Newshop = ({ field1Data }) => {
   const [gerente, setGerente] = useState("");
 
   return (
-    <div className="py-4 px-8 bg-gray-200 rounded-md">
+    <div className="py-4 px-8  rounded-md">
       <h1 className="bg-red-500 text-white px-4 py-2 rounded-xl text-2xl mb-4">
         Crie sua loja aqui
       </h1>
