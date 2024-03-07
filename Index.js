@@ -50,23 +50,11 @@ server.get("/", function (req, res) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
         <title>Hot Dog Adams</title>
-        <style>
-            body{
-                background-color: #ccc;
-                font-family: 'Poppins', sans-serif;
-                font-weight: 1000;
-            }
-            
-            span, .primary-color{
-                background-image: linear-gradient(to right,#fce729, #f1cd2c);
-                -webkit-background-clip: text;
-                color: transparent;
-            }
-            </style>
+       
     </head>
     <body>
         ${ReactDOMServer.renderToString(<App />)}
-        <img src="/images/hot.png" alt="ksks" />
+       
     </body>
     </html>`;
 

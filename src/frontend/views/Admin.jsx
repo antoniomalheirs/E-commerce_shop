@@ -7,46 +7,47 @@ const Admin = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="py-4" style={{ backgroundColor: "#ccc" }}>
-      <h1 className="text-center text-3xl font-bold text-black mb-4">
-        Login
-      </h1>
-      <form
-        action="/auth/login"
-        method="POST"
-        className="flex flex-col items-center"
-      >
-        <TextField
-          placeholder="Nome de usuário"
-          variant="outlined"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="my-2 w-80 md:w-96"
-          required
-          name="username"
-        />
-        <TextField
-          type="password"
-          placeholder="Senha"
-          variant="outlined"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="my-2 w-80 md:w-96"
-          required
-          name="password"
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className="my-2 w-80 md:w-96"
-        >
-          Entrar
-        </Button>
-      </form>
+    <div className="flex items-center justify-center h-screen bg-gray-900">
+      <div className="py-4 bg-white rounded-lg shadow-lg p-8 w-96">
+        <h1 className="text-center text-3xl font-bold text-gray-900 mb-4">
+          Login
+        </h1>
+        <form action="/auth/login" method="POST" className="flex flex-col items-center">
+          <TextField
+            placeholder="Nome de usuário"
+            variant="outlined"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="my-2 w-full"
+            required
+            name="username"
+          />
+          <TextField
+            type="password"
+            placeholder="Senha"
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="my-2 w-full"
+            required
+            name="password"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ backgroundColor: "#FF0000" }} // Alterado para a cor padrão do site
+            className="my-2 w-full"
+          >
+            Entrar
+          </Button>
+        </form>
 
-      <a href="/auth/register" className="block text-center text-green-500 mt-4 underline">Registrar conta</a>
+        <a href="/auth/register" className="block text-center text-red-500 mt-4 underline">
+          Registrar conta
+        </a>
+      </div>
     </div>
   );
 };
+
 export default Admin;

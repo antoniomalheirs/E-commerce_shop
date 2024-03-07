@@ -2,13 +2,13 @@ import React from 'react';
 //import ofertas from '../assets/ofertas.webp'
 const Ofertas = () => {
     return (
-        <div className='py-10 text-white bg-[#232325] h-auto' id='ofertas'>
+        <div className=' py-10 text-white  h-auto bg-gray-800' id='ofertas'>
             <div className='flex sm:flex-row flex-col-reverse items-center md:gap-6 gap-12 px-10 max-w-6xl mx-auto'>
 
                 <div>
                     <div className='w-[400px] h-full'>
                     <img
-                     src=""
+                     src="/images/ofertas.webp"
                      alt=""
                      className='rounded-xl w-[300px] sm:w-[400px] mx-auto h-auto '
                      />

@@ -3,14 +3,19 @@ import Button from "@mui/material/Button";
 
 const Newnegocio = () => {
   return (
-    <div className="py-2 pl-2 flex justify-start" >
-      <div className="flex flex-col">
-        <h1 className="bg-green-500 text-white px-2 py-1 rounded-xl">
-            Crie sua loja aqui
-        </h1>
-        <a href="/shop/newB" className="pt-2 pl-3">
-          <Button variant="contained" color="primary">
-            Adicionar
+    <div className="flex justify-center items-center h-screen">
+      <div className="bg-gray-800 text-white rounded-md p-3 md:p-4 my-6 md:my-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-1 md:mb-2">Crie sua loja aqui</h1>
+        <p className="text-gray-300 mb-1 md:mb-3">
+          Comece a explorar oportunidades de negócios agora!
+        </p>
+        <a href="/shop/newB">
+          <Button
+            variant="contained"
+            color="primary"
+            className="bg-yellow-500 hover:bg-yellow-600"
+          >
+            Adicionar Loja
           </Button>
         </a>
       </div>

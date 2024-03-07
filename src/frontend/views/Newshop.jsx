@@ -11,14 +11,16 @@ const Newshop = ({ field1Data }) => {
   const [gerente, setGerente] = useState("");
 
   return (
-    <div className="py-2 pl-2 ">
-      <h1 className="bg-green-500 text-white px-2 py-1 rounded-xl">
+    <div className="py-4 px-8 bg-gray-200 rounded-md">
+      <h1 className="bg-red-500 text-white px-4 py-2 rounded-xl text-2xl mb-4">
         Crie sua loja aqui
       </h1>
       <div className="flex flex-col justify-center items-center">
         <form action="/shop/**" method="POST" className="mt-4">
-          <label htmlFor="nome">Nome:</label>
-          <div className="mb-2">
+          <div className="mb-4">
+            <label htmlFor="nome" className="text-gray-800">
+              Nome:
+            </label>
             <TextField
               name="nome"
               placeholder="Nome"
@@ -26,10 +28,13 @@ const Newshop = ({ field1Data }) => {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               required
+              className="w-full"
             />
           </div>
-          <label htmlFor="numero">Número:</label>
-          <div className="mb-2">
+          <div className="mb-4">
+            <label htmlFor="numero" className="text-gray-800">
+              Número:
+            </label>
             <TextField
               name="numero"
               placeholder="Número"
@@ -37,10 +42,13 @@ const Newshop = ({ field1Data }) => {
               value={numero}
               onChange={(e) => setNumero(e.target.value)}
               required
+              className="w-full"
             />
           </div>
-          <label htmlFor="cpf">CPF:</label>
-          <div className="mb-2">
+          <div className="mb-4">
+            <label htmlFor="cpf" className="text-gray-800">
+              CPF:
+            </label>
             <TextField
               name="cpf"
               placeholder="CPF"
@@ -48,10 +56,13 @@ const Newshop = ({ field1Data }) => {
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
               required
+              className="w-full"
             />
           </div>
-          <label htmlFor="rg">RG:</label>
-          <div className="mb-2">
+          <div className="mb-4">
+            <label htmlFor="rg" className="text-gray-800">
+              RG:
+            </label>
             <TextField
               name="rg"
               placeholder="RG"
@@ -59,10 +70,13 @@ const Newshop = ({ field1Data }) => {
               value={rg}
               onChange={(e) => setRg(e.target.value)}
               required
+              className="w-full"
             />
           </div>
-          <label htmlFor="data">Data:</label>
-          <div className="mb-2">
+          <div className="mb-4">
+            <label htmlFor="data" className="text-gray-800">
+              Data:
+            </label>
             <TextField
               name="data"
               type="date"
@@ -71,11 +85,14 @@ const Newshop = ({ field1Data }) => {
               value={data}
               onChange={(e) => setData(e.target.value)}
               required
+              className="w-full"
             />
           </div>
           <input type="hidden" name="administrador" value={field1Data} />
-          <label htmlFor="gerente">Gerente:</label>
-          <div className="mb-2">
+          <div className="mb-4">
+            <label htmlFor="gerente" className="text-gray-800">
+              Gerente:
+            </label>
             <TextField
               name="gerente"
               placeholder="Gerente"
@@ -83,12 +100,11 @@ const Newshop = ({ field1Data }) => {
               value={gerente}
               onChange={(e) => setGerente(e.target.value)}
               required
+              className="w-full"
             />
           </div>
-          <div className="mb-2">
-            
-          </div>
-          <Button type="submit" variant="contained" color="primary">
+          <div className="mb-4"></div>
+          <Button type="submit" variant="contained" style={{ backgroundColor: "#FFD700" }} className="w-full">
             Enviar
           </Button>
         </form>

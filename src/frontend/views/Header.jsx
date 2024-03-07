@@ -9,7 +9,7 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-black">
+    <div>
       <div className=" text-red-500 flex justify-between items-center max-w=[1240px] mx-auto h-20 px-4 text-l">
         <h1 className="text-3xl font-bold primary-color ml-4">
           Cardapio Online

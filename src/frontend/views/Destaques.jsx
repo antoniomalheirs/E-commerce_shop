@@ -1,5 +1,5 @@
 import React from 'react'
-// import hot from '/mg/logo.png'
+// import hot from '/images/logo.png'
 
 
 import TypeAnimation from 'react-type-animation'
@@ -20,7 +20,7 @@ const Destaques = () => {
             
         </div>
         <div className='my-auto'>
-                {/* <img className=' rounded-xl w-[300px] sm:w-[500px] mx-auto h-auto ' src={hot} alt="" /> */}
+                <img className=' rounded-xl w-[300px] sm:w-[500px] mx-auto h-auto ' src="/images/logo.png" alt="" />
         </div>
 
         </div>
