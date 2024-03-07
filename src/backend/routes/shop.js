@@ -41,27 +41,37 @@ router.get("/newB", isAuthenticated, (req, res) => {
 });
 
 router.post("/**", isAuthenticated, async (req, res) => {
-    const shopschema = new ShopsRepository(Mongoose, "Shops");
-    const shop = req.body;
-    await shopschema.add(shop);
+  const shopschema = new ShopsRepository(Mongoose, "Shops");
+  const shop = req.body;
+  
+  try {
+      await shopschema.add(shop);
+      console.log("Dados da requisição:", req.body);
 
-    console.log("Dados da requisição:", req.body);
-    
-    const html = `
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-        <title>Hot Dog Adams</title>
-      </head>
-      <body>
-        ${ReactDOM.renderToString(<Newshop />)}
-        ${ReactDOM.renderToString(<Feetpage />)}
-      </body>
-    </html>`;
-  res.send(html);
+      const html = `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          <title>Hot Dog Adams</title>
+        </head>
+        <body>
+          ${ReactDOM.renderToString(<Newshop />)}
+          ${ReactDOM.renderToString(<Feetpage />)}
+        </body>
+      </html>`;
+      res.send(html);
+  } catch (error) {
+      if (error.message === "Loja já existe no banco de dados.") {
+          res.status(400).send("Loja já existe no banco de dados.");
+      } else {
+          console.error("Erro ao adicionar loja:", error);
+          res.status(500).send("Erro interno do servidor.");
+      }
+  }
 });
+
 
 module.exports = router;

@@ -29,9 +29,23 @@ module.exports = class ShopRepository extends Repository {
     }
   }
 
-  add(entity) {
+  async add(entity) {
+    const existingShop = await this.model.findOne({ 
+        nome: entity.nome,
+        numero: entity.numero,
+        cpf: entity.cpf,
+        rg: entity.rg,
+        data: entity.data,
+        administrador: entity.administrador,
+        gerente: entity.gerente
+    });
+
+    if (existingShop) {
+        throw new Error("Loja já existe no banco de dados.");
+    }
+
     return this.model.create(entity).then(this.parse);
-  }
+}
 
   async findOne(id) {
     return this.model.findById(id).then(this.parse);

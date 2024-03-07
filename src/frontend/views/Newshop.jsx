@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 const Newshop = ({ field1Data }) => {
-  // Estados para armazenar os valores dos campos do formulário
   const [nome, setNome] = useState("");
   const [numero, setNumero] = useState("");
   const [cpf, setCpf] = useState("");
