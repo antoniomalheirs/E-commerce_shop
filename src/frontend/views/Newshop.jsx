@@ -87,9 +87,7 @@ const Newshop = ({ field1Data }) => {
             />
           </div>
           <div className="mb-2">
-            <label htmlFor="administrador">
-              ID do Administrador - {field1Data.toString()}
-            </label>
+            
           </div>
           <Button type="submit" variant="contained" color="primary">
             Enviar

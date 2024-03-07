@@ -10,7 +10,6 @@ import App from "./src/frontend/App.jsx";
 import DatabaseLoader from "./src/backend/loaders/DatabaseLoader.js";
 import "./src/backend/routes/local.js";
 import cookieParser from 'cookie-parser';
-import path from 'path';
 import bodyParser from "body-parser"
 
 require("dotenv").config();
@@ -67,8 +66,6 @@ server.get("/", function (req, res) {
     </head>
     <body>
         ${ReactDOMServer.renderToString(<App />)}
-        <img src="/img/logo.png" alt="logo">
-
     </body>
     </html>`;
     console.log("Caminho da imagem:", path.join(__dirname, 'public', 'img', 'logo.png'));
