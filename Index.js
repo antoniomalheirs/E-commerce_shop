@@ -9,8 +9,9 @@ import shopRoutes from "./src/backend/routes/shop.js";
 import App from "./src/frontend/App.jsx";
 import DatabaseLoader from "./src/backend/loaders/DatabaseLoader.js";
 import "./src/backend/routes/local.js";
-import cookieParser from 'cookie-parser';
-import bodyParser from "body-parser"
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import path from "path";
 
 require("dotenv").config();
 const databaseLoader = new DatabaseLoader();
@@ -22,7 +23,6 @@ server.use(bodyParser.json());
 
 server.set("trust proxy", 1);
 server.set("views", __dirname + "/views");
-server.use(express.static(__dirname + "/public" ));
 
 
 server.use(cookieParser());
@@ -66,10 +66,23 @@ server.get("/", function (req, res) {
     </head>
     <body>
         ${ReactDOMServer.renderToString(<App />)}
+        <img src="/images/hot.png" alt="ksks" />
     </body>
     </html>`;
-    console.log("Caminho da imagem:", path.join(__dirname, 'public', 'img', 'logo.png'));
 
+  const caminhoCompleto = path.resolve(
+    __dirname,
+    "public",
+    "img",
+  );
+
+  const caminhoSemDist = caminhoCompleto.replace(
+    path.sep + "dist" + path.sep,
+    path.sep
+  );
+
+  console.log("Caminho da imagem:", caminhoSemDist);
+  server.use("/images", express.static(path.resolve(caminhoSemDist)));
 
   res.send(html);
 });

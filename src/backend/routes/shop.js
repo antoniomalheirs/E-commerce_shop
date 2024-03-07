@@ -42,8 +42,11 @@ router.get("/newB", isAuthenticated, (req, res) => {
 
 router.post("/**", isAuthenticated, async (req, res) => {
     const shopschema = new ShopsRepository(Mongoose, "Shops");
-    //const shop = await shopschema.findOne(re);
+    const shop = req.body;
+    await shopschema.add(shop);
+
     console.log("Dados da requisição:", req.body);
+    
     const html = `
     <!DOCTYPE html>
     <html lang="en">
