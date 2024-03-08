@@ -42,6 +42,10 @@ router.get("/newB", isAuthenticated, (req, res) => {
 router.post("/**", isAuthenticated, async (req, res) => {
   const shopschema = new ShopsRepository(Mongoose, "Shops");
   const shop = req.body;
+
+  if (typeof shop.diasdefuncionamento === 'string') {
+    shop.diasdefuncionamento = shop.diasdefuncionamento.split(',').map(day => day.trim()).filter(Boolean);
+  }
   
   try {
       await shopschema.add(shop);

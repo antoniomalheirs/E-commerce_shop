@@ -9,9 +9,18 @@ const Newshop = ({ field1Data }) => {
   const [rg, setRg] = useState("");
   const [data, setData] = useState("");
   const [gerente, setGerente] = useState("");
+  const [diasDefuncionamento, setDiasDefuncionamento] = useState([]);
 
+  const handleDiasDefuncionamentoChange = (e) => {
+    const diasString = e.target.value;
+    const diasArray = diasString.split(',').map(day => day.trim()).filter(Boolean);
+    setDiasDefuncionamento(diasArray);
+  };
+  
+
+ 
   return (
-    <div className="py-4 px-8  rounded-md">
+    <div className="py-4 px-8 rounded-md">
       <h1 className="bg-red-500 text-white px-4 py-2 rounded-xl text-2xl mb-4">
         Crie sua loja aqui
       </h1>
@@ -103,8 +112,26 @@ const Newshop = ({ field1Data }) => {
               className="w-full"
             />
           </div>
-          <div className="mb-4"></div>
-          <Button type="submit" variant="contained" style={{ backgroundColor: "#FFD700" }} className="w-full">
+          <div className="mb-4">
+            <label htmlFor="diasdefuncionamento" className="text-gray-800">
+              Dias de Funcionamento:
+            </label>
+            <TextField
+              name="diasdefuncionamento"
+              placeholder="Dias de Funcionamento (separados por vírgula)"
+              variant="outlined"
+              value={diasDefuncionamento.join(",")}
+              onChange={handleDiasDefuncionamentoChange}
+              required
+              className="w-full"
+            />
+          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ backgroundColor: "#FFD700" }}
+            className="w-full"
+          >
             Enviar
           </Button>
         </form>

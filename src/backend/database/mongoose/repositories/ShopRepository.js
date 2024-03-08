@@ -16,6 +16,7 @@ module.exports = class ShopRepository extends UsersRepository {
       data: null,
       administrador: null,
       gerente: null,
+      diasdefuncionamento: null,
       ...(super.parse(entity) || {}),
     };
   }

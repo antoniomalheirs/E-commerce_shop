@@ -7,5 +7,6 @@ module.exports = new Schema({
   rg: { type: String, required: true },
   data: { type: Date, required: true },
   administrador: { type: String, required: true },
-  gerente: { type: String }
+  gerente: { type: String },
+  diasdefuncionamento: [{ type: String }]
 });

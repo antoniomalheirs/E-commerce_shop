@@ -22,7 +22,8 @@ module.exports = class ShopRepository extends Repository {
         rg: entity.rg,
         data: entity.data,
         administrador: entity.administrador,
-        gerente: entity.gerente
+        gerente: entity.gerente,
+        diasdefuncionamento: entity.diasdefuncionamento
       };
     } else {
       return null;
