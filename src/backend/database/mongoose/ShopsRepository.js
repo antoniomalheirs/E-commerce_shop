@@ -8,8 +8,7 @@ module.exports = class ShopRepository extends Repository {
       throw new Error("O modelo de loja não pode ser nulo.");
     this.mongoose = mongoose;
 
-    this.model =
-      typeof model === "string" ? mongoose.model(model) : model;
+    this.model = typeof model === "string" ? mongoose.model(model) : model;
   }
 
   parse(entity) {
@@ -23,7 +22,7 @@ module.exports = class ShopRepository extends Repository {
         data: entity.data,
         administrador: entity.administrador,
         gerente: entity.gerente,
-        diasdefuncionamento: entity.diasdefuncionamento
+        diasdefuncionamento: entity.diasdefuncionamento,
       };
     } else {
       return null;
@@ -31,22 +30,22 @@ module.exports = class ShopRepository extends Repository {
   }
 
   async add(entity) {
-    const existingShop = await this.model.findOne({ 
-        nome: entity.nome,
-        numero: entity.numero,
-        cpf: entity.cpf,
-        rg: entity.rg,
-        data: entity.data,
-        administrador: entity.administrador,
-        gerente: entity.gerente
+    const existingShop = await this.model.findOne({
+      nome: entity.nome,
+      numero: entity.numero,
+      cpf: entity.cpf,
+      rg: entity.rg,
+      data: entity.data,
+      administrador: entity.administrador,
+      gerente: entity.gerente,
     });
 
     if (existingShop) {
-        throw new Error("Loja já existe no banco de dados.");
+      throw new Error("Loja já existe no banco de dados.");
     }
 
     return this.model.create(entity).then(this.parse);
-}
+  }
 
   async findOne(id) {
     return this.model.findById(id).then(this.parse);

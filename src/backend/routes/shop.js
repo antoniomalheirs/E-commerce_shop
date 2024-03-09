@@ -10,19 +10,19 @@ const Mongoose = require("mongoose");
 const ShopsRepository = require("../database/mongoose/ShopsRepository");
 
 const isAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    res.redirect("/");
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/");
 };
-  
+
 router.use((req, res, next) => {
-    console.log("Shop Time: ", Date.now());
-    next();
+  console.log("Shop Time: ", Date.now());
+  next();
 });
 
 router.get("/newB", isAuthenticated, (req, res) => {
-    const html = `
+  const html = `
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -32,7 +32,7 @@ router.get("/newB", isAuthenticated, (req, res) => {
         <title>Hot Dog Adams</title>
       </head>
       <body>
-        ${ReactDOM.renderToString(<Newshop  field1Data={req.user._id}/>)}
+        ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
@@ -43,15 +43,40 @@ router.post("/**", isAuthenticated, async (req, res) => {
   const shopschema = new ShopsRepository(Mongoose, "Shops");
   const shop = req.body;
 
-  if (typeof shop.diasdefuncionamento === 'string') {
-    shop.diasdefuncionamento = shop.diasdefuncionamento.split(',').map(day => day.trim()).filter(Boolean);
+  if (typeof shop.diasdefuncionamento === "string") {
+    shop.diasdefuncionamento = shop.diasdefuncionamento
+      .split(",")
+      .map((day) => day.trim())
+      .filter(Boolean);
   }
-  
-  try {
-      await shopschema.add(shop);
-      console.log("Dados da requisição:", req.body);
 
-      const html = `
+  shop.diasdefuncionamento = shop.diasdefuncionamento.map(
+    (day) => day + " - Feira"
+  );
+
+  const diasDaSemana = [
+    "Segunda - Feira",
+    "Terça - Feira",
+    "Quarta - Feira",
+    "Quinta - Feira",
+    "Sexta - Feira",
+    "Sábado - Feira",
+    "Domingo - Feira",
+  ];
+  const diasCorretos = shop.diasdefuncionamento.every((day) =>
+    diasDaSemana.includes(day)
+  );
+  if (!diasCorretos) {
+    return res
+      .status(400)
+      .send("Os dias de funcionamento devem corresponder aos dias da semana.");
+  }
+
+  try {
+    await shopschema.add(shop);
+    console.log("Dados da requisição:", req.body);
+
+    const html = `
       <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -65,16 +90,15 @@ router.post("/**", isAuthenticated, async (req, res) => {
           ${ReactDOM.renderToString(<Feetpage />)}
         </body>
       </html>`;
-      res.send(html);
+    res.send(html);
   } catch (error) {
-      if (error.message === "Loja já existe no banco de dados.") {
-          res.status(400).send("Loja já existe no banco de dados.");
-      } else {
-          console.error("Erro ao adicionar loja:", error);
-          res.status(500).send("Erro interno do servidor.");
-      }
+    if (error.message === "Loja já existe no banco de dados.") {
+      res.status(400).send("Loja já existe no banco de dados.");
+    } else {
+      console.error("Erro ao adicionar loja:", error);
+      res.status(500).send("Erro interno do servidor.");
+    }
   }
 });
-
 
 module.exports = router;

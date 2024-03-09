@@ -32,8 +32,10 @@ router.get("/logout", (req, res) => {
   });
 });
 
-router.post("/login", passport.authenticate("local", { failureRedirect: "/auth/admin" }), async (req, res, next) => {
-  const html = `
+router.post("/login",
+  passport.authenticate("local", { failureRedirect: "/auth/admin" }),
+  async (req, res, next) => {
+    const html = `
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -43,15 +45,25 @@ router.post("/login", passport.authenticate("local", { failureRedirect: "/auth/a
         <title>Hot Dog Adams</title>
       </head>
       <body>
-        ${ReactDOM.renderToString(<HomeAdm field1Data={req.user.username} field2Data={"Nome de administrador"} field3Data={req.user._id} field4Data={"Id de administrador"}/>)}
+        ${ReactDOM.renderToString(
+          <HomeAdm
+            field1Data={req.user.username}
+            field2Data={"Nome de administrador"}
+            field3Data={req.user._id}
+            field4Data={"Id de administrador"}
+          />
+        )}
         ${ReactDOM.renderToString(<Newnegocio />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
-  res.send(html);
-});
+    res.send(html);
+  }
+);
 
-router.post("/signup", passport.authenticate("signup", { failureRedirect: "/auth/register" }), async (req, res, next) => {
+router.post("/signup",
+  passport.authenticate("signup", { failureRedirect: "/auth/register" }),
+  async (req, res, next) => {
     const html = `<!DOCTYPE html>
       <html lang="en">
       <head>
@@ -61,7 +73,15 @@ router.post("/signup", passport.authenticate("signup", { failureRedirect: "/auth
           <title>Hot Dog Adams</title>
       </head>
       <body>
-        ${ReactDOM.renderToString(<HomeAdm field1Data={req.user.username} field2Data={"Nome de administrador"} field3Data={req.user._id} field4Data={"Id de administrador"}/>)}
+        ${ReactDOM.renderToString(
+          <HomeAdm
+            field1Data={req.user.username}
+            field2Data={"Nome de administrador"}
+            field3Data={req.user._id}
+            field4Data={"Id de administrador"}
+          />
+        )}
+        ${ReactDOM.renderToString(<Newnegocio />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
       </html>`;
@@ -70,7 +90,32 @@ router.post("/signup", passport.authenticate("signup", { failureRedirect: "/auth
 );
 
 router.get("/register", (req, res) => {
-  const html = `<!DOCTYPE html>
+  if (req.isAuthenticated()) {
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>Hot Dog Adams</title>
+      </head>
+      <body>
+        ${ReactDOM.renderToString(
+          <HomeAdm
+            field1Data={req.user.username}
+            field2Data={"Nome de administrador"}
+            field3Data={req.user._id}
+            field4Data={"Id de administrador"}
+          />
+        )}
+        ${ReactDOM.renderToString(<Newnegocio />)}
+        ${ReactDOM.renderToString(<Feetpage />)}
+      </body>
+    </html>`;
+    res.send(html);
+  } else {
+    const html = `<!DOCTYPE html>
   <html lang="en">
   <head>
       <meta charset="UTF-8">
@@ -82,23 +127,50 @@ router.get("/register", (req, res) => {
       ${ReactDOM.renderToString(<Register />)}
   </body>
   </html>`;
-  res.send(html);
+    res.send(html);
+  }
 });
 
 router.get("/admin", (req, res) => {
-  const html = `<!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-      <title>Hot Dog Adams</title>
-  </head>
-  <body>
-      ${ReactDOM.renderToString(<Admin />)}
-  </body>
-  </html>`;
-  res.send(html);
+  if (req.isAuthenticated()) {
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>Hot Dog Adams</title>
+      </head>
+      <body>
+        ${ReactDOM.renderToString(
+          <HomeAdm
+            field1Data={req.user.username}
+            field2Data={"Nome de administrador"}
+            field3Data={req.user._id}
+            field4Data={"Id de administrador"}
+          />
+        )}
+        ${ReactDOM.renderToString(<Newnegocio />)}
+        ${ReactDOM.renderToString(<Feetpage />)}
+      </body>
+    </html>`;
+    res.send(html);
+  } else {
+    const html = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>Hot Dog Adams</title>
+    </head>
+    <body>
+        ${ReactDOM.renderToString(<Admin />)}
+    </body>
+    </html>`;
+    res.send(html);
+  }
 });
 
 module.exports = router;

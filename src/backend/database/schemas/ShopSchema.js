@@ -8,5 +8,5 @@ module.exports = new Schema({
   data: { type: Date, required: true },
   administrador: { type: String, required: true },
   gerente: { type: String },
-  diasdefuncionamento: [{ type: String }]
+  diasdefuncionamento: [{ type: String }],
 });

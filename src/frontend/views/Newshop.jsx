@@ -13,12 +13,13 @@ const Newshop = ({ field1Data }) => {
 
   const handleDiasDefuncionamentoChange = (e) => {
     const diasString = e.target.value;
-    const diasArray = diasString.split(',').map(day => day.trim()).filter(Boolean);
+    const diasArray = diasString
+      .split(",")
+      .map((day) => day.trim())
+      .filter(Boolean);
     setDiasDefuncionamento(diasArray);
   };
-  
 
- 
   return (
     <div className="py-4 px-8 rounded-md">
       <h1 className="bg-red-500 text-white px-4 py-2 rounded-xl text-2xl mb-4">

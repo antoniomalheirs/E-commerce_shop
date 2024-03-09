@@ -22,8 +22,15 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 server.set("trust proxy", 1);
-server.set("views", __dirname + "/views");
+const caminhoCompleto = path.resolve(__dirname, "public", "img");
 
+const caminhoSemDist = caminhoCompleto.replace(
+  path.sep + "dist" + path.sep,
+  path.sep
+);
+
+console.log("Caminho da imagem:", caminhoSemDist);
+server.use("/images", express.static(path.resolve(caminhoSemDist)));
 
 server.use(cookieParser());
 server.use(
@@ -57,20 +64,6 @@ server.get("/", function (req, res) {
        
     </body>
     </html>`;
-
-  const caminhoCompleto = path.resolve(
-    __dirname,
-    "public",
-    "img",
-  );
-
-  const caminhoSemDist = caminhoCompleto.replace(
-    path.sep + "dist" + path.sep,
-    path.sep
-  );
-
-  console.log("Caminho da imagem:", caminhoSemDist);
-  server.use("/images", express.static(path.resolve(caminhoSemDist)));
 
   res.send(html);
 });
