@@ -53,7 +53,6 @@ router.post("/**", isAuthenticated, async (req, res) => {
   shop.diasdefuncionamento = shop.diasdefuncionamento.map(
     (day) => day + " - Feira"
   );
-
   const diasDaSemana = [
     "Segunda - Feira",
     "Terça - Feira",

@@ -32,7 +32,8 @@ router.get("/logout", (req, res) => {
   });
 });
 
-router.post("/login",
+router.post(
+  "/login",
   passport.authenticate("local", { failureRedirect: "/auth/admin" }),
   async (req, res, next) => {
     const html = `
@@ -61,7 +62,8 @@ router.post("/login",
   }
 );
 
-router.post("/signup",
+router.post(
+  "/signup",
   passport.authenticate("signup", { failureRedirect: "/auth/register" }),
   async (req, res, next) => {
     const html = `<!DOCTYPE html>
