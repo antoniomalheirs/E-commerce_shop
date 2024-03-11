@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 const Admin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const loginFailed = params.get("admin");
+
+    if (loginFailed) {
+      alert("Credenciais inválidas. Por favor, tente novamente.");
+    }
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900">

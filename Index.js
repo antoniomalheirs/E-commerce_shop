@@ -12,12 +12,13 @@ import "./src/backend/routes/local.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import path from "path";
+import flash from 'connect-flash';
 
 require("dotenv").config();
 const databaseLoader = new DatabaseLoader();
 
 const server = express();
-
+server.use(flash());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 

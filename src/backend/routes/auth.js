@@ -32,11 +32,40 @@ router.get("/logout", (req, res) => {
   });
 });
 
-router.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: "/auth/admin" }),
-  async (req, res, next) => {
-    const html = `
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash(
+        "error",
+        "Erro de autenticação. Verifique suas credenciais e tente novamente."
+      );
+      const errorMessage = req.flash("error")[0];
+      const html = `<!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+              <title>Hot Dog Adams</title>
+            </head>
+            <body>
+              <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Erro:</strong>
+                <span class="block sm:inline">${errorMessage}</span>
+              </div>
+              ${ReactDOM.renderToString(<Admin />)}
+            </body>
+          </html>`;
+      return res.send(html);
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      const html = `
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -58,15 +87,42 @@ router.post(
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
-    res.send(html);
-  }
-);
+      res.send(html);
+    });
+  })(req, res, next);
+});
 
-router.post(
-  "/signup",
-  passport.authenticate("signup", { failureRedirect: "/auth/register" }),
-  async (req, res, next) => {
-    const html = `<!DOCTYPE html>
+router.post("/signup", (req, res, next) => {
+  passport.authenticate("signup", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash("error", "Erro ao criar usuário. Por favor, tente novamente.");
+      const errorMessage = req.flash("error")[0];
+      const html = `<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+              <title>Hot Dog Adams</title>
+          </head>
+          <body>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">Erro:</strong>
+              <span class="block sm:inline">${errorMessage}</span>
+            </div>
+            ${ReactDOM.renderToString(<Register />)}
+          </body>
+          </html>`;
+      return res.send(html);
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      const html = `<!DOCTYPE html>
       <html lang="en">
       <head>
           <meta charset="UTF-8">
@@ -87,9 +143,10 @@ router.post(
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
       </html>`;
-    res.send(html);
-  }
-);
+      res.send(html);
+    });
+  })(req, res, next);
+});
 
 router.get("/register", (req, res) => {
   if (req.isAuthenticated()) {
