@@ -39,7 +39,7 @@ router.get("/newB", isAuthenticated, (req, res) => {
   res.send(html);
 });
 
-router.post("/**", isAuthenticated, async (req, res) => {
+router.post("/**", isAuthenticated, async (req, res, next) => {
   const shopschema = new ShopsRepository(Mongoose, "Shops");
   const shop = req.body;
 
@@ -66,17 +66,12 @@ router.post("/**", isAuthenticated, async (req, res) => {
     diasDaSemana.includes(day)
   );
   if (!diasCorretos) {
-    return res
-      .status(400)
-      .send("Os dias de funcionamento devem corresponder aos dias da semana.");
-  }
-
-  try {
-    await shopschema.add(shop);
-    console.log("Dados da requisição:", req.body);
-
-    const html = `
-      <!DOCTYPE html>
+    req.flash(
+      "error",
+      "Os dias de funcionamento devem corresponder aos dias da semana."
+    );
+    const errorMessage = req.flash("error")[0];
+    const html = `<!DOCTYPE html>
       <html lang="en">
         <head>
           <meta charset="UTF-8">
@@ -85,17 +80,83 @@ router.post("/**", isAuthenticated, async (req, res) => {
           <title>Hot Dog Adams</title>
         </head>
         <body>
-          ${ReactDOM.renderToString(<Newshop />)}
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erro:</strong>
+            <span class="block sm:inline">${errorMessage}</span>
+          </div>
+          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
           ${ReactDOM.renderToString(<Feetpage />)}
         </body>
       </html>`;
-    res.send(html);
+    return res.send(html);
+  }
+
+  try {
+    await shopschema.add(shop);
+    console.log("Dados da requisição:", req.body);
+    const errorMessage = req.flash("error")[0];
+    const html = `<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          <title>Hot Dog Adams</title>
+        </head>
+        <body>
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erro:</strong>
+            <span class="block sm:inline">${errorMessage}</span>
+          </div>
+          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
+          ${ReactDOM.renderToString(<Feetpage />)}
+        </body>
+      </html>`;
+    return res.send(html);
   } catch (error) {
     if (error.message === "Loja já existe no banco de dados.") {
-      res.status(400).send("Loja já existe no banco de dados.");
+      req.flash("error", "Loja já existe no banco de dados.");
+      const errorMessage = req.flash("error")[0];
+      const html = `<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          <title>Hot Dog Adams</title>
+        </head>
+        <body>
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erro:</strong>
+            <span class="block sm:inline">${errorMessage}</span>
+          </div>
+          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
+          ${ReactDOM.renderToString(<Feetpage />)}
+        </body>
+      </html>`;
+      return res.send(html);
     } else {
       console.error("Erro ao adicionar loja:", error);
-      res.status(500).send("Erro interno do servidor.");
+      req.flash("error", "Erro interno do servidor.");
+      const errorMessage = req.flash("error")[0];
+      const html = `<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          <title>Hot Dog Adams</title>
+        </head>
+        <body>
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erro:</strong>
+            <span class="block sm:inline">${errorMessage}</span>
+          </div>
+          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
+          ${ReactDOM.renderToString(<Feetpage />)}
+        </body>
+      </html>`;
+      return res.send(html);
     }
   }
 });
