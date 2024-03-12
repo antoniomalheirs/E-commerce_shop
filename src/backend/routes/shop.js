@@ -16,6 +16,35 @@ const isAuthenticated = (req, res, next) => {
   res.redirect("/");
 };
 
+function renderHTMLWithErrorMessage(
+  errorMessage,
+  reqUserData,
+  NewshopComponent,
+  FeetpageComponent
+) {
+  const html = `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>Hot Dog Adams</title>
+      </head>
+      <body>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong class="font-bold">Erro:</strong>
+          <span class="block sm:inline">${errorMessage}</span>
+        </div>
+        ${ReactDOM.renderToString(
+          <NewshopComponent field1Data={reqUserData} />
+        )}
+        ${ReactDOM.renderToString(<FeetpageComponent />)}
+      </body>
+    </html>`;
+
+  return html;
+}
+
 router.use((req, res, next) => {
   console.log("Shop Time: ", Date.now());
   next();
@@ -71,23 +100,12 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
       "Os dias de funcionamento devem corresponder aos dias da semana."
     );
     const errorMessage = req.flash("error")[0];
-    const html = `<!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-          <title>Hot Dog Adams</title>
-        </head>
-        <body>
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Erro:</strong>
-            <span class="block sm:inline">${errorMessage}</span>
-          </div>
-          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
-          ${ReactDOM.renderToString(<Feetpage />)}
-        </body>
-      </html>`;
+    const html = renderHTMLWithErrorMessage(
+      errorMessage,
+      req.user._id,
+      Newshop,
+      Feetpage
+    );
     return res.send(html);
   }
 
@@ -95,67 +113,34 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
     await shopschema.add(shop);
     console.log("Dados da requisição:", req.body);
     const errorMessage = req.flash("error")[0];
-    const html = `<!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-          <title>Hot Dog Adams</title>
-        </head>
-        <body>
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Erro:</strong>
-            <span class="block sm:inline">${errorMessage}</span>
-          </div>
-          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
-          ${ReactDOM.renderToString(<Feetpage />)}
-        </body>
-      </html>`;
+    const html = renderHTMLWithErrorMessage(
+      errorMessage,
+      req.user._id,
+      Newshop,
+      Feetpage
+    );
     return res.send(html);
   } catch (error) {
     if (error.message === "Loja já existe no banco de dados.") {
       req.flash("error", "Loja já existe no banco de dados.");
       const errorMessage = req.flash("error")[0];
-      const html = `<!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-          <title>Hot Dog Adams</title>
-        </head>
-        <body>
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Erro:</strong>
-            <span class="block sm:inline">${errorMessage}</span>
-          </div>
-          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
-          ${ReactDOM.renderToString(<Feetpage />)}
-        </body>
-      </html>`;
+      const html = renderHTMLWithErrorMessage(
+        errorMessage,
+        req.user._id,
+        Newshop,
+        Feetpage
+      );
       return res.send(html);
     } else {
       console.error("Erro ao adicionar loja:", error);
       req.flash("error", "Erro interno do servidor.");
       const errorMessage = req.flash("error")[0];
-      const html = `<!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-          <title>Hot Dog Adams</title>
-        </head>
-        <body>
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Erro:</strong>
-            <span class="block sm:inline">${errorMessage}</span>
-          </div>
-          ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
-          ${ReactDOM.renderToString(<Feetpage />)}
-        </body>
-      </html>`;
+      const html = renderHTMLWithErrorMessage(
+        errorMessage,
+        req.user._id,
+        Newshop,
+        Feetpage
+      );
       return res.send(html);
     }
   }
