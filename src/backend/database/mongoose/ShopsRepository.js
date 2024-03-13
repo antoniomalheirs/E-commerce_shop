@@ -19,13 +19,25 @@ module.exports = class ShopRepository extends Repository {
         numero: entity.numero,
         cpf: entity.cpf,
         rg: entity.rg,
-        data: entity.data,
+        data: entity.data.toLocaleDateString(), // ou entity.data.toISOString()
         administrador: entity.administrador,
         gerente: entity.gerente,
         diasdefuncionamento: entity.diasdefuncionamento,
       };
     } else {
       return null;
+    }
+  }
+  
+
+  async findShopByAdministrador(administrador) {
+    try {
+      const shop = await this.model.findOne({ administrador });
+      console.log(shop);
+      return shop ? this.parse(shop) : null;
+    } catch (error) {
+      console.error("Erro ao buscar loja por administrador:", error);
+      throw error;
     }
   }
 
