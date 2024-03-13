@@ -112,14 +112,7 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
   try {
     await shopschema.add(shop);
     console.log("Dados da requisição:", req.body);
-    const errorMessage = req.flash("error")[0];
-    const html = renderHTMLWithErrorMessage(
-      errorMessage,
-      req.user._id,
-      Newshop,
-      Feetpage
-    );
-    return res.send(html);
+    return res.redirect("/auth/admin");
   } catch (error) {
     if (error.message === "Loja já existe no banco de dados.") {
       req.flash("error", "Loja já existe no banco de dados.");
