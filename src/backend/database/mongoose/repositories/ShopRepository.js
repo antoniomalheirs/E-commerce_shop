@@ -1,7 +1,7 @@
-const UsersRepository = require("../UsersRepository");
+const ShopsRepository = require("../ShopsRepository");
 const ShopSchema = require("../../schemas/ShopSchema.js");
 
-module.exports = class ShopRepository extends UsersRepository {
+module.exports = class ShopRepository extends ShopsRepository {
   constructor(mongoose) {
     super(mongoose, mongoose.model("Shops", ShopSchema));
   }
