@@ -13,6 +13,7 @@ const { default: Register } = require("../../frontend/views/Register.jsx");
 const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
 const { default: Newnegocio } = require("../../frontend/views/Newnegocio.jsx");
 const { default: Negocio } = require("../../frontend/views/Negocio.jsx");
+const { default: Ofers } = require("../../frontend/views/Ofers.jsx");
 
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -63,6 +64,7 @@ function generateHTML(req, shop) {
         )}
         ${shop ? ReactDOM.renderToString(<Negocio lojaData={shop} />) : ''}
         ${shop ? '' : ReactDOM.renderToString(<Newnegocio />)}
+        ${ReactDOM.renderToString(<Ofers />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;

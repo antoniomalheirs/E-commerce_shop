@@ -5,9 +5,11 @@ const ReactDOM = require("react-dom/server");
 
 const { default: Newshop } = require("../../frontend/views/Newshop.jsx");
 const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
+const { default: OferPage } = require("../../frontend/views/OferPage.jsx");
 
 const Mongoose = require("mongoose");
 const ShopsRepository = require("../database/mongoose/ShopsRepository");
+const OfersRepository = require("../database/mongoose/OfersRepository");
 
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -62,6 +64,24 @@ router.get("/newB", isAuthenticated, (req, res) => {
       </head>
       <body>
         ${ReactDOM.renderToString(<Newshop field1Data={req.user._id} />)}
+        ${ReactDOM.renderToString(<Feetpage />)}
+      </body>
+    </html>`;
+  res.send(html);
+});
+
+router.get("/newO", isAuthenticated, (req, res) => {
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>Hot Dog Adams</title>
+      </head>
+      <body>
+        ${ReactDOM.renderToString(<OferPage userId={req.user._id} />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
@@ -132,6 +152,40 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
         errorMessage,
         req.user._id,
         Newshop,
+        Feetpage
+      );
+      return res.send(html);
+    }
+  }
+});
+
+router.post("/bend", isAuthenticated, async (req, res, next) => {
+  const oferschema = new OfersRepository(Mongoose, "Ofers");
+  const oferta = req.body;
+
+  try {
+    await oferschema.add(oferta);
+    console.log("Dados da requisição:", req.body);
+    
+  } catch (error) {
+    if (error.message === "Loja já existe no banco de dados.") {
+      req.flash("error", "Loja já existe no banco de dados.");
+      const errorMessage = req.flash("error")[0];
+      const html = renderHTMLWithErrorMessage(
+        errorMessage,
+        req.user._id,
+        OferPage,
+        Feetpage
+      );
+      return res.send(html);
+    } else {
+      console.error("Erro ao adicionar loja:", error);
+      req.flash("error", "Erro interno do servidor.");
+      const errorMessage = req.flash("error")[0];
+      const html = renderHTMLWithErrorMessage(
+        errorMessage,
+        req.user._id,
+        OferPage,
         Feetpage
       );
       return res.send(html);
