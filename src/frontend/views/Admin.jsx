@@ -21,7 +21,11 @@ const Admin = () => {
         <h1 className="text-center text-3xl font-bold text-gray-900 mb-4">
           Login
         </h1>
-        <form action="/auth/login" method="POST" className="flex flex-col items-center">
+        <form
+          action="/auth/login"
+          method="POST"
+          className="flex flex-col items-center"
+        >
           <TextField
             placeholder="Nome de usuário"
             variant="outlined"
@@ -51,7 +55,10 @@ const Admin = () => {
           </Button>
         </form>
 
-        <a href="/auth/register" className="block text-center text-red-500 mt-4 underline">
+        <a
+          href="/auth/register"
+          className="block text-center text-red-500 mt-4 underline"
+        >
           Registrar conta
         </a>
       </div>

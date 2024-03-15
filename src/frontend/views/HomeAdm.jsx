@@ -3,7 +3,10 @@ import TextField from "@mui/material/TextField";
 
 const HomeAdm = ({ field1Data, field2Data, field3Data, field4Data }) => {
   return (
-    <div className="py-4 flex justify-center items-center" style={{ backgroundColor: "#FFFFFF" }}>
+    <div
+      className="py-4 flex justify-center items-center"
+      style={{ backgroundColor: "#FFFFFF" }}
+    >
       <div className="flex flex-row">
         <div className="mx-2">
           <TextField

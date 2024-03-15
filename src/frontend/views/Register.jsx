@@ -12,7 +12,11 @@ const Register = () => {
         <h1 className="text-center text-3xl font-bold text-gray-900 mb-4">
           Criar conta
         </h1>
-        <form action="/auth/signup" method="POST" className="flex flex-col items-center">
+        <form
+          action="/auth/signup"
+          method="POST"
+          className="flex flex-col items-center"
+        >
           <TextField
             placeholder="Nome de usuário"
             variant="outlined"
@@ -42,7 +46,10 @@ const Register = () => {
           </Button>
         </form>
 
-        <a href="/auth/admin" className="block text-center text-red-500 mt-4 underline">
+        <a
+          href="/auth/admin"
+          className="block text-center text-red-500 mt-4 underline"
+        >
           Fazer login
         </a>
       </div>

@@ -28,7 +28,6 @@ module.exports = class ShopRepository extends Repository {
       return null;
     }
   }
-  
 
   async findShopByAdministrador(administrador) {
     try {

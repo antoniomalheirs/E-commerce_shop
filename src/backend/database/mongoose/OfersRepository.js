@@ -26,13 +26,13 @@ module.exports = class OferRepository extends Repository {
     }
   }
 
-  async findShopByAdministrador(administrador) {
+  async findOferByAdministrador(administrador) {
     try {
-      const shop = await this.model.findOne({ administrador });
-      console.log(shop);
-      return shop ? this.parse(shop) : null;
+      const ofer = await this.model.findOne({ administrador });
+      console.log(ofer);
+      return ofer ? this.parse(ofer) : null;
     } catch (error) {
-      console.error("Erro ao buscar loja por administrador:", error);
+      console.error("Erro ao buscar oferta por administrador:", error);
       throw error;
     }
   }
@@ -41,6 +41,7 @@ module.exports = class OferRepository extends Repository {
     const existingOffer = await this.model.findOne({
       titulo: entity.titulo,
       valor: entity.valor,
+      administrador: entity.administrador,
       items: entity.items,
       categoria: entity.categoria,
     });

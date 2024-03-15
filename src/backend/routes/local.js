@@ -24,7 +24,10 @@ passport.deserializeUser(async (username, done) => {
   }
 });
 
-passport.use(new Strategy({ usernameField: "username" }, async (username, password, done) => {
+passport.use(
+  new Strategy(
+    { usernameField: "username" },
+    async (username, password, done) => {
       try {
         const userschema = new UsersRepository(Mongoose, "Users");
         const user = await userschema.findOne(username);
@@ -54,7 +57,11 @@ passport.use(new Strategy({ usernameField: "username" }, async (username, passwo
   )
 );
 
-passport.use("signup", new Strategy({ usernameField: "username" }, async (username, password, done) => {
+passport.use(
+  "signup",
+  new Strategy(
+    { usernameField: "username" },
+    async (username, password, done) => {
       try {
         const userschema = new UsersRepository(Mongoose, "Users");
         const user = await userschema.findOne(username);

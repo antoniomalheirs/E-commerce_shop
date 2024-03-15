@@ -29,8 +29,7 @@ const Negocio = ({ lojaData }) => {
           <strong>Gerente:</strong> {lojaData.gerente}
         </div>
         <div className="mb-2">
-          <strong>Dias de Funcionamento:</strong>{" "}
-          {lojaData.diasdefuncionamento}
+          <strong>Dias de Funcionamento:</strong> {lojaData.diasdefuncionamento}
         </div>
       </div>
     </div>
