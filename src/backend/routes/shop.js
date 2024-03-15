@@ -52,7 +52,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/newB", isAuthenticated, (req, res) => {
+router.get("/business", isAuthenticated, (req, res) => {
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -70,7 +70,47 @@ router.get("/newB", isAuthenticated, (req, res) => {
   res.send(html);
 });
 
-router.get("/newO", isAuthenticated, (req, res) => {
+router.post("/****", isAuthenticated, async (req, res, next) => {
+  const oferschema = new OfersRepository(Mongoose, "Ofers");
+  const oferta = req.body;
+
+  if (typeof oferta.items === "string") {
+    oferta.items = oferta.items
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  try {
+    await oferschema.add(oferta);
+    console.log("Dados da requisição:", req.body);
+    return res.redirect("/auth/admin");
+  } catch (error) {
+    if (error.message === "Oferta existente no banco de dados.") {
+      req.flash("error", "Oferta já existe no banco de dados.");
+      const errorMessage = req.flash("error")[0];
+      const html = renderHTMLWithErrorMessage(
+        errorMessage,
+        req.user._id,
+        OferPage,
+        Feetpage
+      );
+      return res.send(html);
+    } else {
+      req.flash("error", "Erro interno.");
+      const errorMessage = req.flash("error")[0];
+      const html = renderHTMLWithErrorMessage(
+        errorMessage,
+        req.user._id,
+        OferPage,
+        Feetpage
+      );
+      return res.send(html);
+    }
+  }
+});
+
+router.get("/oferta", isAuthenticated, (req, res) => {
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -81,7 +121,7 @@ router.get("/newO", isAuthenticated, (req, res) => {
         <title>Hot Dog Adams</title>
       </head>
       <body>
-        ${ReactDOM.renderToString(<OferPage userId={req.user._id} />)}
+        ${ReactDOM.renderToString(<OferPage field1Data={req.user._id} />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
@@ -152,40 +192,6 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
         errorMessage,
         req.user._id,
         Newshop,
-        Feetpage
-      );
-      return res.send(html);
-    }
-  }
-});
-
-router.post("/bend", isAuthenticated, async (req, res, next) => {
-  const oferschema = new OfersRepository(Mongoose, "Ofers");
-  const oferta = req.body;
-
-  try {
-    await oferschema.add(oferta);
-    console.log("Dados da requisição:", req.body);
-    
-  } catch (error) {
-    if (error.message === "Loja já existe no banco de dados.") {
-      req.flash("error", "Loja já existe no banco de dados.");
-      const errorMessage = req.flash("error")[0];
-      const html = renderHTMLWithErrorMessage(
-        errorMessage,
-        req.user._id,
-        OferPage,
-        Feetpage
-      );
-      return res.send(html);
-    } else {
-      console.error("Erro ao adicionar loja:", error);
-      req.flash("error", "Erro interno do servidor.");
-      const errorMessage = req.flash("error")[0];
-      const html = renderHTMLWithErrorMessage(
-        errorMessage,
-        req.user._id,
-        OferPage,
         Feetpage
       );
       return res.send(html);

@@ -9,7 +9,7 @@ const Ofers = () => {
         <p className="text-gray-300 mb-1 md:mb-3">
           Comece a criar suas ofertas!
         </p>
-        <a href="/shop/newO">
+        <a href="/shop/oferta">
           <Button
             variant="contained"
             color="primary"
