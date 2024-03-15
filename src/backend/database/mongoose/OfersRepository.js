@@ -17,6 +17,7 @@ module.exports = class OferRepository extends Repository {
         _id: entity._id,
         titulo: entity.titulo,
         valor: entity.valor,
+        administrador: entity.administrador,
         items: entity.items,
         categoria: entity.categoria,
       };

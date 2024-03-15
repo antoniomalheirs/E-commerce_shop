@@ -11,6 +11,7 @@ module.exports = class OferRepository extends OfersRepository {
       _id: null,
       titulo: null,
       valor: null,
+      administrador: null,
       items: null,
       categoria: null,
       ...(super.parse(entity) || {}),

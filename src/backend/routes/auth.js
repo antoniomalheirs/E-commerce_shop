@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom/server");
 
 const Mongoose = require("mongoose");
 const ShopRepository = require("../database/mongoose/ShopsRepository");
+const OfersRepository = require("../database/mongoose/OfersRepository");
 
 const { default: Admin } = require("../../frontend/views/Admin.jsx");
 const { default: HomeAdm } = require("../../frontend/views/HomeAdm.jsx");
@@ -14,6 +15,7 @@ const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
 const { default: Newnegocio } = require("../../frontend/views/Newnegocio.jsx");
 const { default: Negocio } = require("../../frontend/views/Negocio.jsx");
 const { default: Ofers } = require("../../frontend/views/Ofers.jsx");
+const { default: Oferta } = require("../../frontend/views/Oferta.jsx");
 
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -43,7 +45,7 @@ function renderHTMLWithErrorMessage(errorMessage, AdminComponent) {
   return html;
 }
 
-function generateHTML(req, shop) {
+function generateHTML(req, shop, ofer) {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -64,7 +66,8 @@ function generateHTML(req, shop) {
         )}
         ${shop ? ReactDOM.renderToString(<Negocio lojaData={shop} />) : ''}
         ${shop ? '' : ReactDOM.renderToString(<Newnegocio />)}
-        ${ReactDOM.renderToString(<Ofers />)}
+        ${ofer ? ReactDOM.renderToString(<Oferta ofertaData={ofer} />) : ''}
+        ${ofer ? '' : ReactDOM.renderToString(<Ofers />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;
@@ -75,6 +78,17 @@ async function render(administrador) {
     const shopRepository = new ShopRepository(Mongoose, "Shops");
     const shop = await shopRepository.findShopByAdministrador(administrador);
     return shop;
+  } catch (error) {
+    console.error("Erro ao renderizar loja por administrador:", error);
+    throw error;
+  }
+}
+
+async function renderOfer(administrador) {
+  try {
+    const oferRepository = new OfersRepository(Mongoose, "Ofers");
+    const ofer = await oferRepository.findShopByAdministrador(administrador);
+    return ofer;
   } catch (error) {
     console.error("Erro ao renderizar loja por administrador:", error);
     throw error;
@@ -116,7 +130,8 @@ router.post("/login", async (req, res, next) => {
       }
       try {
         const shop = await render(req.user._id);
-        const html = generateHTML(req, shop);
+        const ofer = await renderOfer(req.user._id);
+        const html = generateHTML(req, shop, ofer);
         res.send(html);
       } catch (error) {
         console.error("Erro ao renderizar loja:", error);
