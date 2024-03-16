@@ -8,10 +8,12 @@ const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
 const { default: OferPage } = require("../../frontend/views/OferPage.jsx");
 const { default: GerenciaLoja } = require("../../frontend/views/GerenciaLoja.jsx");
 const { default: Negocio } = require("../../frontend/views/Negocio.jsx");
+const { default: Oferta } = require("../../frontend/views/Oferta.jsx");
 
 const Mongoose = require("mongoose");
 const ShopsRepository = require("../database/mongoose/ShopsRepository");
 const OfersRepository = require("../database/mongoose/OfersRepository");
+
 
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -34,7 +36,7 @@ async function render(administrador) {
 async function renderOfer(administrador) {
   try {
     const oferRepository = new OfersRepository(Mongoose, "Ofers");
-    const ofer = await oferRepository.findOferByAdministrador(administrador);
+    const ofer = await oferRepository.findOfertasByAdministrador(administrador);
     return ofer;
   } catch (error) {
     console.error("Erro ao renderizar loja por administrador:", error);
@@ -225,6 +227,7 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
 
 router.get("/gerenciar", isAuthenticated, async (req, res, next) => {
   const shop = await render(req.user._id);
+  const ofer  = await renderOfer(req.user._id); 
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -237,6 +240,9 @@ router.get("/gerenciar", isAuthenticated, async (req, res, next) => {
       <body>
         ${ReactDOM.renderToString(<GerenciaLoja />)}
         ${shop ? ReactDOM.renderToString(<Negocio lojaData={shop} />) : ""}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+          ${ofer.map((ofer, index) => ReactDOM.renderToString(<Oferta key={index} ofertaData={ofer} />)).join("")}
+        </div>
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
     </html>`;

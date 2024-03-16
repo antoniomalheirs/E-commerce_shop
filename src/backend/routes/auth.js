@@ -66,7 +66,9 @@ function generateHTML(req, shop, ofer) {
         )}
         ${shop ? ReactDOM.renderToString(<Negocio lojaData={shop} />) : ""}
         ${shop ? "" : ReactDOM.renderToString(<Newnegocio />)}
-        ${ofer ? ReactDOM.renderToString(<Oferta ofertaData={ofer} />) : ""}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+          ${ofer.map((ofer, index) => ReactDOM.renderToString(<Oferta key={index} ofertaData={ofer} />)).join("")}
+        </div>
         ${ofer ? "" : ReactDOM.renderToString(<Ofers />)}
         ${ReactDOM.renderToString(<Feetpage />)}
       </body>
@@ -87,7 +89,7 @@ async function render(administrador) {
 async function renderOfer(administrador) {
   try {
     const oferRepository = new OfersRepository(Mongoose, "Ofers");
-    const ofer = await oferRepository.findOferByAdministrador(administrador);
+    const ofer = await oferRepository.findOfertasByAdministrador(administrador);
     return ofer;
   } catch (error) {
     console.error("Erro ao renderizar loja por administrador:", error);
