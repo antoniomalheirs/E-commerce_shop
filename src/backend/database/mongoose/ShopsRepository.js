@@ -32,7 +32,6 @@ module.exports = class ShopRepository extends Repository {
   async findShopByAdministrador(administrador) {
     try {
       const shop = await this.model.findOne({ administrador });
-      console.log(shop);
       return shop ? this.parse(shop) : null;
     } catch (error) {
       console.error("Erro ao buscar loja por administrador:", error);

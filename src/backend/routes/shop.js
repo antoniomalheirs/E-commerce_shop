@@ -6,6 +6,8 @@ const ReactDOM = require("react-dom/server");
 const { default: Newshop } = require("../../frontend/views/Newshop.jsx");
 const { default: Feetpage } = require("../../frontend/views/Feetpage.jsx");
 const { default: OferPage } = require("../../frontend/views/OferPage.jsx");
+const { default: GerenciaLoja } = require("../../frontend/views/GerenciaLoja.jsx");
+const { default: Negocio } = require("../../frontend/views/Negocio.jsx");
 
 const Mongoose = require("mongoose");
 const ShopsRepository = require("../database/mongoose/ShopsRepository");
@@ -17,6 +19,28 @@ const isAuthenticated = (req, res, next) => {
   }
   res.redirect("/");
 };
+
+async function render(administrador) {
+  try {
+    const shopRepository = new ShopsRepository(Mongoose, "Shops");
+    const shop = await shopRepository.findShopByAdministrador(administrador);
+    return shop;
+  } catch (error) {
+    console.error("Erro ao renderizar loja por administrador:", error);
+    throw error;
+  }
+}
+
+async function renderOfer(administrador) {
+  try {
+    const oferRepository = new OfersRepository(Mongoose, "Ofers");
+    const ofer = await oferRepository.findOferByAdministrador(administrador);
+    return ofer;
+  } catch (error) {
+    console.error("Erro ao renderizar loja por administrador:", error);
+    throw error;
+  }
+}
 
 function renderHTMLWithErrorMessage(
   errorMessage,
@@ -197,6 +221,26 @@ router.post("/**", isAuthenticated, async (req, res, next) => {
       return res.send(html);
     }
   }
+});
+
+router.get("/gerenciar", isAuthenticated, async (req, res, next) => {
+  const shop = await render(req.user._id);
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>Hot Dog Adams</title>
+      </head>
+      <body>
+        ${ReactDOM.renderToString(<GerenciaLoja />)}
+        ${shop ? ReactDOM.renderToString(<Negocio lojaData={shop} />) : ""}
+        ${ReactDOM.renderToString(<Feetpage />)}
+      </body>
+    </html>`;
+  res.send(html);
 });
 
 module.exports = router;

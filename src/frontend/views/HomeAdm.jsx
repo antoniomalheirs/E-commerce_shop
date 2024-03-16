@@ -1,5 +1,6 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const HomeAdm = ({ field1Data, field2Data, field3Data, field4Data }) => {
   return (
@@ -29,6 +30,39 @@ const HomeAdm = ({ field1Data, field2Data, field3Data, field4Data }) => {
             className="my-2"
             InputProps={{ style: { backgroundColor: "#ffffff" } }}
           />
+        </div>
+        <div className="mx-2">
+          <a href="/shop/oferta">
+            <Button
+              variant="contained"
+              color="primary"
+              className="bg-yellow-500 hover:bg-yellow-600"
+            >
+              Adicionar Oferta
+            </Button>
+          </a>
+        </div>
+        <div className="mx-2">
+          <a href="/shop/business">
+            <Button
+              variant="contained"
+              color="primary"
+              className="bg-yellow-500 hover:bg-yellow-600"
+            >
+              Adicionar Loja
+            </Button>
+          </a>
+        </div>
+        <div className="mx-2">
+          <a href="/shop/gerenciar">
+            <Button
+              variant="contained"
+              color="primary"
+              className="bg-yellow-500 hover:bg-yellow-600"
+            >
+              Gerenciar Loja
+            </Button>
+          </a>
         </div>
       </div>
     </div>

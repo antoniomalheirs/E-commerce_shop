@@ -29,7 +29,6 @@ module.exports = class OferRepository extends Repository {
   async findOferByAdministrador(administrador) {
     try {
       const ofer = await this.model.findOne({ administrador });
-      console.log(ofer);
       return ofer ? this.parse(ofer) : null;
     } catch (error) {
       console.error("Erro ao buscar oferta por administrador:", error);
