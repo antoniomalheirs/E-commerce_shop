@@ -21,8 +21,8 @@ const Newshop = ({ field1Data }) => {
   };
 
   return (
-    <div className="py-4 px-8 rounded-md">
-      <h1 className="bg-red-500 text-white px-4 py-2 rounded-xl text-2xl mb-4">
+    <div className="py-4 px-8 bg-white rounded-md">
+      <h1 className="bg-red-600 text-white px-4 py-2 rounded-xl text-2xl mb-4">
         Crie sua loja aqui
       </h1>
       <div className="flex flex-col justify-center items-center">
@@ -131,7 +131,7 @@ const Newshop = ({ field1Data }) => {
             type="submit"
             variant="contained"
             style={{ backgroundColor: "#FFD700" }}
-            className="w-full"
+            className="w-full text-black"
           >
             Enviar
           </Button>

@@ -2,8 +2,8 @@ import React from "react";
 
 const Oferta = ({ ofertaData }) => {
   return (
-    <div className="flex justify-center items-center mb-8">
-      <div className="bg-gray-500 text-black rounded-md p-3 md:p-4 my-6 md:my-8">
+    <div className="flex justify-center items-center" style={{ minHeight: 'calc(100vh - 4rem)' }}>
+      <div className="bg-red-600 text-white rounded-md p-3 md:p-4 my-6 md:my-8 text-center">
         <h1 className="text-2xl md:text-3xl font-bold mb-1 md:mb-2">
           Informações da Oferta
         </h1>

@@ -14,7 +14,7 @@ const Newnegocio = () => {
         <a href="/shop/business">
           <Button
             variant="contained"
-            color="primary"
+            style={{ backgroundColor: "#FFD700" }}
             className="bg-yellow-500 hover:bg-yellow-600"
           >
             Adicionar Loja

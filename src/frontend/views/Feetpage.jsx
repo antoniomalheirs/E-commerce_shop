@@ -2,19 +2,19 @@ import React from "react";
 
 const HomeAdm = () => {
   return (
-    <div className="fixed bottom-0 w-full bg-gray-900 py-4 flex justify-center items-center">
-      <div className="flex flex-row">
+    <div className="fixed bottom-0 w-full bg-red-600 py-2">
+      <div className="container mx-auto flex justify-between items-center">
         <a
           href="/auth/about"
-          className="block text-center text-red-500 mr-4 underline"
+          className="text-yellow-300 text-lg hover:underline mr-8"
         >
-          Ir para sobre!
+          Sobre
         </a>
         <a
           href="/auth/logout"
-          className="block text-center text-red-500 underline"
+          className="text-yellow-300 text-lg hover:underline"
         >
-          Sair e Voltar para o Inicio
+          Sair e Voltar para o Início
         </a>
       </div>
     </div>
